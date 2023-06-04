@@ -1,0 +1,8 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: Install Postfix
+      apt:
+        name: postfix
+        update_cache: true

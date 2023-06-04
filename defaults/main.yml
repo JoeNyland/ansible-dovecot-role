@@ -1,0 +1,6 @@
+---
+# See https://doc.dovecot.org/configuration_manual/mail_location/
+dovecot_mailbox_location: "mbox:/var/mail/%u"
+
+# TODO: Document
+dovecot_auth_username_format: '%Lu'

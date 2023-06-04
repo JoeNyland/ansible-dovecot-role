@@ -1,0 +1,46 @@
+---
+- name: Install Dovecot
+  become: true
+  tags: dovecot
+  block:
+    - name: Install
+      apt:
+        name:
+          - dovecot-core
+          - dovecot-imapd
+          - dovecot-lmtpd
+        update_cache: true
+
+    - name: Configure mail location
+      lineinfile:
+        path: /etc/dovecot/conf.d/10-mail.conf
+        regexp: "^mail_location"
+        line: "mail_location = {{ dovecot_mailbox_location }}"
+        mode: "0644"
+      notify: Reload Dovecot
+
+    - name: Configure user name format for authentication
+      lineinfile:
+        path: /etc/dovecot/conf.d/10-auth.conf
+        regexp: "^auth_username_format"
+        line: "auth_username_format = {{ dovecot_auth_username_format }}"
+        mode: "0644"
+      notify: Reload Dovecot
+
+    - name: Setup LMTP socket in Postfix
+      blockinfile:
+        path: /etc/dovecot/conf.d/10-master.conf
+        insertafter: "^service lmtp"
+        block: |
+          unix_listener /var/spool/postfix/private/dovecot-lmtp {
+            group = postfix
+            mode = 0600
+            user = postfix
+          }
+        mode: "0644"
+      notify: Restart Dovecot
+
+    - name: Enable service
+      service:
+        name: dovecot
+        enabled: true
