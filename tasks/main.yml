@@ -9,6 +9,7 @@
           - dovecot-core
           - dovecot-imapd
           - dovecot-lmtpd
+          - dovecot-sieve
         update_cache: true
 
     - name: Configure mail location
@@ -39,6 +40,22 @@
           }
         mode: "0644"
       notify: Restart Dovecot
+
+    - name: Setup sieve (LDA)
+      lineinfile:
+        path: /etc/dovecot/conf.d/15-lda.conf
+        search_string: "mail_plugins = $mail_plugins"
+        line: "  mail_plugins = $mail_plugins sieve"
+        mode: "0644"
+      notify: Reload Dovecot
+
+    - name: Setup sieve (LMTP)
+      lineinfile:
+        path: /etc/dovecot/conf.d/20-lmtp.conf
+        search_string: "mail_plugins = $mail_plugins"
+        line: "  mail_plugins = $mail_plugins sieve"
+        mode: "0644"
+      notify: Reload Dovecot
 
     - name: Enable service
       service:
