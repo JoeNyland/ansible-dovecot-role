@@ -57,6 +57,24 @@
         mode: "0644"
       notify: Reload Dovecot
 
+    - name: Setup SSL certificate
+      lineinfile:
+        path: /etc/dovecot/conf.d/10-ssl.conf
+        search_string: "ssl_cert = </etc/dovecot/private/dovecot.pem"
+        line: "ssl_cert = <{{ dovecot_ssl_certificate }}"
+        mode: "0644"
+      when: dovecot_ssl_certificate is defined
+      notify: Restart Dovecot
+
+    - name: Setup SSL key
+      lineinfile:
+        path: /etc/dovecot/conf.d/10-ssl.conf
+        search_string: "ssl_key = </etc/dovecot/private/dovecot.key"
+        line: "ssl_key = <{{ dovecot_ssl_key }}"
+        mode: "0644"
+      when: dovecot_ssl_key is defined
+      notify: Restart Dovecot
+
     - name: Enable service
       service:
         name: dovecot
