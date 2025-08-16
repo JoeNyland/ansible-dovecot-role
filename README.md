@@ -29,6 +29,14 @@ Whether the Dovecot service should start at boot.
 
 The state of the Dovecot service (e.g., `started` or `stopped`).
 
+### `dovecot_ssl_cert`
+
+Path to the SSL certificate file for Dovecot.
+
+### `dovecot_ssl_key`
+
+Path to the SSL key file for Dovecot.
+
 Dependencies
 ------------
 
