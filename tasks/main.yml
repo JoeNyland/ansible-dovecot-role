@@ -75,7 +75,8 @@
       when: dovecot_ssl_key is defined
       notify: Restart Dovecot
 
-    - name: Enable service
+    - name: Manage service
       service:
         name: dovecot
-        enabled: true
+        enabled: "{{ dovecot_service_enabled }}"
+        state: "{{ dovecot_service_state }}"

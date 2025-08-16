@@ -21,6 +21,14 @@ Where Dovecot looks for user mailboxes.
 
 The format of the username to use when performing authenication.
 
+### `dovecot_service_enabled`
+
+Whether the Dovecot service should start at boot.
+
+### `dovecot_service_state`
+
+The state of the Dovecot service (e.g., `started` or `stopped`).
+
 Dependencies
 ------------
 

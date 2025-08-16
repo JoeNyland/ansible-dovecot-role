@@ -3,8 +3,10 @@
   service:
     name: dovecot
     state: reloaded
+  when: dovecot_service_enabled
 
 - name: Restart Dovecot
   service:
     name: dovecot
     state: restarted
+  when: dovecot_service_enabled

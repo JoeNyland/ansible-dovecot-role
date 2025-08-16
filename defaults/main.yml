@@ -4,3 +4,7 @@
 dovecot_auth_username_format: '%Lu'
 # See https://doc.dovecot.org/configuration_manual/mail_location/
 dovecot_mailbox_location: "mbox:/var/mail/%u"
+# Should the Dovecot service start at boot?
+dovecot_service_enabled: true
+# What state should the Dovecot service be in? e.g. started/stopped
+dovecot_service_state: started
