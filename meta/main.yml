@@ -8,7 +8,7 @@ galaxy_info:
   platforms:
   - name: Debian
     versions:
-      - bookworm # 12 (stable)
+      - trixie # 13 (stable)
   galaxy_tags:
     - dovecot
     - email

@@ -13,9 +13,17 @@ None.
 Role Variables
 --------------
 
-### `dovecot_mailbox_location`
+### `dovecot_mailbox_driver`
 
-Where Dovecot looks for user mailboxes.
+The mailbox driver to use.
+
+### `dovecot_mailbox_path`
+
+The path where user mailboxes are stored.
+
+### `dovecot_inbox_path`
+
+The path for the user's inbox. This is typically where incoming mail is delivered.
 
 ### `dovecot_auth_username_format`
 
@@ -29,11 +37,11 @@ Whether the Dovecot service should start at boot.
 
 The state of the Dovecot service (e.g., `started` or `stopped`).
 
-### `dovecot_ssl_cert`
+### `dovecot_ssl_server_cert_file`
 
 Path to the SSL certificate file for Dovecot.
 
-### `dovecot_ssl_key`
+### `dovecot_ssl_server_key_file`
 
 Path to the SSL key file for Dovecot.
 

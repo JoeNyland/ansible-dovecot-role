@@ -12,11 +12,27 @@
           - dovecot-sieve
         update_cache: true
 
-    - name: Configure mail location
+    - name: Configure mail driver
       lineinfile:
         path: /etc/dovecot/conf.d/10-mail.conf
-        regexp: "^mail_location"
-        line: "mail_location = {{ dovecot_mailbox_location }}"
+        regexp: "^mail_driver"
+        line: "mail_driver = {{ dovecot_mailbox_driver }}"
+        mode: "0644"
+      notify: Reload Dovecot
+
+    - name: Configure mail path
+      lineinfile:
+        path: /etc/dovecot/conf.d/10-mail.conf
+        regexp: "^mail_path"
+        line: "mail_path = {{ dovecot_mailbox_path }}"
+        mode: "0644"
+      notify: Reload Dovecot
+
+    - name: Configure inbox path
+      lineinfile:
+        path: /etc/dovecot/conf.d/10-mail.conf
+        regexp: "^mail_inbox_path"
+        line: "mail_inbox_path = {{ dovecot_inbox_path }}"
         mode: "0644"
       notify: Reload Dovecot
 
@@ -42,37 +58,43 @@
       notify: Restart Dovecot
 
     - name: Setup sieve (LDA)
-      lineinfile:
+      blockinfile:
         path: /etc/dovecot/conf.d/15-lda.conf
-        search_string: "mail_plugins = $mail_plugins"
-        line: "  mail_plugins = $mail_plugins sieve"
+        insertafter: "^protocol lda"
+        block: |
+          mail_plugins {
+            sieve = yes
+          }
         mode: "0644"
       notify: Reload Dovecot
 
     - name: Setup sieve (LMTP)
-      lineinfile:
+      blockinfile:
         path: /etc/dovecot/conf.d/20-lmtp.conf
-        search_string: "mail_plugins = $mail_plugins"
-        line: "  mail_plugins = $mail_plugins sieve"
+        insertafter: "^protocol lmtp"
+        block: |
+          mail_plugins {
+            sieve = yes
+          }
         mode: "0644"
       notify: Reload Dovecot
 
     - name: Setup SSL certificate
       lineinfile:
         path: /etc/dovecot/conf.d/10-ssl.conf
-        search_string: "ssl_cert = </etc/dovecot/private/dovecot.pem"
-        line: "ssl_cert = <{{ dovecot_ssl_certificate }}"
+        search_string: ssl_server_cert_file = /etc/dovecot/private/dovecot.pem
+        line: "ssl_server_cert_file = {{ dovecot_ssl_server_cert_file }}"
         mode: "0644"
-      when: dovecot_ssl_certificate is defined
+      when: dovecot_ssl_server_cert_file is defined
       notify: Restart Dovecot
 
     - name: Setup SSL key
       lineinfile:
         path: /etc/dovecot/conf.d/10-ssl.conf
-        search_string: "ssl_key = </etc/dovecot/private/dovecot.key"
-        line: "ssl_key = <{{ dovecot_ssl_key }}"
+        search_string: ssl_server_key_file = /etc/dovecot/private/dovecot.key
+        line: "ssl_server_key_file = {{ dovecot_ssl_server_key_file }}"
         mode: "0644"
-      when: dovecot_ssl_key is defined
+      when: dovecot_ssl_server_key_file is defined
       notify: Restart Dovecot
 
     - name: Manage service

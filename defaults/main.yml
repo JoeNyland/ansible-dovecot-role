@@ -2,8 +2,13 @@
 # Specifies the username formatting for Dovecot authentication.
 # The '%Lu' format expands to the login username in lowercase.
 dovecot_auth_username_format: '%Lu'
+# Specifies the mailbox driver to use.
+# Dovecot defaults to mbox.
+dovecot_mailbox_driver: maildir
 # See https://doc.dovecot.org/configuration_manual/mail_location/
-dovecot_mailbox_location: "mbox:/var/mail/%u"
+dovecot_mailbox_path: "%{home}/mail"
+# Specifies the path for the user's inbox.
+dovecot_inbox_path: "/var/mail/%user"
 # Should the Dovecot service start at boot?
 dovecot_service_enabled: true
 # What state should the Dovecot service be in? e.g. started/stopped
