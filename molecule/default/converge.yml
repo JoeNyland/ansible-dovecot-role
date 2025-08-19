@@ -2,6 +2,11 @@
 - name: Converge
   hosts: all
   tasks:
+    - name: Start Postfix
+      service:
+        name: postfix
+        state: started
+        enabled: true
     - name: "Include joenyland.dovecot"
       include_role:
         name: "joenyland.dovecot"
